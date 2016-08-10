@@ -61,6 +61,11 @@ function buildDetails(optionalDetailName, optionalSubstituteKeyValuePairs) {
     return details;
 }
 
+function wrap_assert_throws(arg) {
+    assert_true("PaymentRequest" in self)
+    assert_throws(arg)
+}
+
 test(function() {
     new PaymentRequest([{'supportedMethods': ['foo']}], buildDetails(), {});
 }, 'Creating a PaymentRequest with empty parameters should not throw or crash.');
@@ -182,7 +187,7 @@ promise_test(function(t) {
     return promise_rejects(t, null, new PaymentRequest([{'supportedMethods': ['foo']}], buildDetails()).abort());
 }, 'abort() without show() should reject with error');
 
-generate_tests(assert_throws, [
+generate_tests(wrap_assert_throws, [
     ['PaymentRequest constructor should throw for incorrect parameter types.', null, function() {
         new PaymentRequest('', '', '')
     }],
@@ -273,7 +278,7 @@ generate_tests(assert_throws, [
 
 var detailNames = ['total', 'displayItems.0', 'shippingOptions.0', 'modifiers.0.total', 'modifiers.0.additionalDisplayItems.0'];
 for (var i in detailNames) {
-    generate_tests(assert_throws, [
+    generate_tests(wrap_assert_throws, [
         // Invalid currency code formats.
         [`Invalid currency code US1 should throw (${detailNames[i]})`, null, function() {
             new PaymentRequest([{'supportedMethods': ['foo']}], buildDetails(detailNames[i], {'currency': 'US1'}))
