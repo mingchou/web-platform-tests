@@ -88,24 +88,6 @@ test(function() {
 
 test(function() {
     var request = new PaymentRequest([{'supportedMethods': ['foo']}], buildDetails());
-    assert_readonly(request, 'shippingAddress', 'PaymentRequest should have a readonly shippingAddress property.');
-    assert_readonly(request, 'shippingOption', 'PaymentRequest should have a readonly shippingOption property.');
-}, 'PaymentRequest should have readonly shippingAddress and shippingOption properties.');
-
-test(function() {
-    var request = new PaymentRequest([{'supportedMethods': ['foo']}], buildDetails());
-    assert_not_equals(request.onshippingaddresschange, undefined, 'PaymentRequest should have onShippingAddressChange event.');
-    assert_not_equals(request.onshippingoptionchange, undefined, 'PaymentRequest should have onShippingOptionChange event.');
-}, 'PaymentRequest should have onShippingAddressChange and onShippingOptionChange events.');
-
-test(function() {
-    var request = new PaymentRequest([{'supportedMethods': ['foo']}], buildDetails());
-    assert_not_equals(request.abort, undefined, 'PaymentRequest should have abort() method.');
-    assert_not_equals(request.show, undefined, 'PaymentRequest should have show() method.');
-}, 'PaymentRequest should have methods abort() and show().');
-
-test(function() {
-    var request = new PaymentRequest([{'supportedMethods': ['foo']}], buildDetails());
     request.show();
     request.abort();
 }, 'PaymentRequest.abort() and PaymentRequest.show() should take no parameters.');
