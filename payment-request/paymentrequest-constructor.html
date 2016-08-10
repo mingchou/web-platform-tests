@@ -197,35 +197,35 @@ generate_tests(wrap_assert_throws, [
     ['PaymentRequest constructor should throw for null required parameter.', null, function() {
         new PaymentRequest(null, null)
     }],
-    ['Empty list of supported payment method identifiers should throw TypeError.', new TypeError(), function() {
+    ['Empty list of supported payment method identifiers should throw TypeError. ("If the length of the methodData sequence is zero, then throw a TypeError.")', new TypeError(), function() {
         new PaymentRequest([], buildDetails())
     }],
-    ['Empty supported payment method identifiers should throw TypeError.', null, function() {
+    ['Empty supported payment method identifiers should throw TypeError. ("For each PaymentMethodData dictionary, if the length of the supportedMethods sequence is zero, then throw a TypeError.")', null, function() {
         new PaymentRequest([{'supportedMethods': []}], buildDetails())
     }],
-    ['Duplicate supported payment method identifiers should throw TypeError (1).', null, function() {
+    ['Duplicate supported payment method identifiers should throw TypeError (1). ("If a payment method identifier appears more than once in the methodData or details.modifiers sequences, then throw a TypeError.")', null, function() {
         new PaymentRequest([{'supportedMethods': ['foo', 'foo']}], buildDetails(), {})
     }],
-    ['Duplicate supported payment method identifiers should throw TypeError (2).', null, function() {
+    ['Duplicate supported payment method identifiers should throw TypeError (2). ("If a payment method identifier appears more than once in the methodData or details.modifiers sequences, then throw a TypeError.")', null, function() {
         new PaymentRequest([{'supportedMethods': ['foo']}, {'supportedMethods': ['foo']}], buildDetails(), {})
     }],
     ['Duplicate shipping option identifiers should throw TypeError.', null, function() {
         var shippingOptions = [buildItem({'id': 'express', 'selected': false}), buildItem({'id': 'express', 'selected': true})];
         new PaymentRequest([{'supportedMethods': ['foo']}], {'total': buildItem(), 'displayItems': [buildItem()], 'shippingOptions': shippingOptions}, {'requestShipping': true})
     }],
-    ['Absence of total should throw TypeError.', null, function() {
+    ['Absence of total should throw TypeError. ("If details does not contain a value for total, then throw a TypeError.")', null, function() {
         new PaymentRequest([{'supportedMethods': ['foo']}], {'displayItems': [buildItem()]})
     }],
-    ['Negative total value should throw a TypeError.', null, function() {
+    ['Negative total value should throw a TypeError. ("If the first character of details.total.amount.value is U+002D HYPHEN-MINUS, then throw a TypeError. total must be a non-negative amount.")', null, function() {
         new PaymentRequest([{'supportedMethods': ['foo']}], buildDetails('total', {'value': '-0.01'}))
     }],
-    ['Duplicate supported payment method identifiers in modifiers should throw TypeError (1).', null, function() {
+    ['Duplicate supported payment method identifiers in modifiers should throw TypeError (1). ("If a payment method identifier appears more than once in the methodData or details.modifiers sequences, then throw a TypeError.")', null, function() {
         new PaymentRequest([{'supportedMethods': ['foo']}], {'total': buildItem(), 'modifiers': [{'supportedMethods': ['foo', 'foo']}]})
     }],
-    ['Duplicate supported payment method identifiers in modifiers should throw TypeError (2).', null, function() {
+    ['Duplicate supported payment method identifiers in modifiers should throw TypeError (2). ("If a payment method identifier appears more than once in the methodData or details.modifiers sequences, then throw a TypeError.")', null, function() {
         new PaymentRequest([{'supportedMethods': ['foo']}], {'total': buildItem(), 'modifiers': [{'supportedMethods': ['foo']}, {'supportedMethods': ['foo']}]})
     }],
-    ['Negative total value in PaymentDetailsModifier should throw a TypeError.', null, function() {
+    ['Negative total value in PaymentDetailsModifier should throw a TypeError. ("For each PaymentDetailsModifier in details.modifiers, if the total field is supplied and the first character of total.amount.value is U+002D HYPHEN-MINUS, then throw a TypeError. total must be a non-negative amount.")', null, function() {
         new PaymentRequest([{'supportedMethods': ['foo']}], {'total': buildItem(), 'modifiers': [{'supportedMethods': ['foo'], 'total': buildItem({'value': '-0.01'})}]})
     }],
     ['Null supportedMethods in modifiers should throw TypeError.', null, function() {
@@ -234,7 +234,7 @@ generate_tests(wrap_assert_throws, [
     ['Undefined supportedMethods in modifiers should throw TypeError.', null, function() {
         new PaymentRequest([{'supportedMethods': ['foo']}], {'total': buildItem(), 'modifiers': [{'supportedMethods': undefined}]})
     }],
-    ['Empty supportedMethods in modifiers should throw TypeError.', null, function() {
+    ['Empty supportedMethods in modifiers should throw TypeError. ("For each PaymentMethodData dictionary, if the length of the supportedMethods sequence is zero, then throw a TypeError.")', null, function() {
         new PaymentRequest([{'supportedMethods': ['foo']}], {'total': buildItem(), 'modifiers': [{'supportedMethods': []}]})
     }],
     ['Absence of supportedMethods in modifiers should throw TypeError.', null, function() {
@@ -254,24 +254,24 @@ generate_tests(wrap_assert_throws, [
     }],
 
     // Payment method specific data should be a JSON-serializable object.
-    ['Array value for payment method specific data parameter should throw', null, function() {
+    ['Array value for payment method specific data parameter should throw. ("For each PaymentMethodData in methodData, if the data field is supplied but is not a JSON-serializable object, then throw a TypeError.")', null, function() {
         new PaymentRequest([{'supportedMethods': ['foo'], 'data': []}], buildDetails(), {})
     }],
-    ['String value for payment method specific data parameter should throw', null, function() {
+    ['String value for payment method specific data parameter should throw. ("For each PaymentMethodData in methodData, if the data field is supplied but is not a JSON-serializable object, then throw a TypeError.")', null, function() {
         new PaymentRequest([{'supportedMethods': ['foo'], 'data': 'foo'}], buildDetails(), {})
     }],
-    ['Numeric value for payment method specific data parameter should throw', null, function() {
+    ['Numeric value for payment method specific data parameter should throw. ("For each PaymentMethodData in methodData, if the data field is supplied but is not a JSON-serializable object, then throw a TypeError.")', null, function() {
         new PaymentRequest([{'supportedMethods': ['foo'], 'data': 42}], buildDetails(), {})
     }],
-    ['Infinite JSON value for one of the payment method specific data pieces should throw', null, function() {
+    ['Infinite JSON value for one of the payment method specific data pieces should throw. ("For each PaymentMethodData in methodData, if the data field is supplied but is not a JSON-serializable object, then throw a TypeError.")', null, function() {
         var infiniteData = {'foo': {}};
         infiniteData.foo = infiniteData;
         new PaymentRequest([{'supportedMethods': ['foo'], 'data': infiniteData}], buildDetails())
     }],
-    ['Null for payment method specific data parameter should throw', null, function() {
+    ['Null for payment method specific data parameter should throw. ("For each PaymentMethodData in methodData, if the data field is supplied but is not a JSON-serializable object, then throw a TypeError.")', null, function() {
         new PaymentRequest([{'supportedMethods': ['foo'], 'data': null}], buildDetails())
     }],
-    ['Empty string for payment method specific data parameter should throw', null, function() {
+    ['Empty string for payment method specific data parameter should throw. ("For each PaymentMethodData in methodData, if the data field is supplied but is not a JSON-serializable object, then throw a TypeError.")', null, function() {
         new PaymentRequest([{'supportedMethods': ['foo'], 'data': ''}], buildDetails())
     }]
 ]);
